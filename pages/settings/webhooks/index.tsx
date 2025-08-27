@@ -1,105 +1,96 @@
-import Link from "next/link";
+// pages/index.tsx
+import { CheckCircle, Lock, Zap, Globe } from "lucide-react";
+import { motion } from "framer-motion";
 
-import { useTeam } from "@/context/team-context";
-import { CircleHelpIcon, WebhookIcon } from "lucide-react";
-import useSWR from "swr";
-
-import { usePlan } from "@/lib/swr/use-billing";
-import { fetcher } from "@/lib/utils";
-
-import PlanBadge from "@/components/billing/plan-badge";
-import AppLayout from "@/components/layouts/app";
-import { SettingsHeader } from "@/components/settings/settings-header";
-import { Button } from "@/components/ui/button";
-import { BadgeTooltip } from "@/components/ui/tooltip";
-
-interface Webhook {
-  id: string;
-  name: string;
-  url: string;
-  createdAt: string;
-}
-
-export default function WebhookSettings() {
-  const teamInfo = useTeam();
-  const { isFree, isPro, isTrial } = usePlan();
-  const teamId = teamInfo?.currentTeam?.id;
-
-  const { data: webhooks } = useSWR<Webhook[]>(
-    teamId ? `/api/teams/${teamId}/webhooks` : null,
-    fetcher,
-  );
-
+export default function Home() {
   return (
-    <AppLayout>
-      <main className="relative mx-2 mb-10 mt-4 space-y-8 overflow-hidden px-1 sm:mx-3 md:mx-5 md:mt-5 lg:mx-7 lg:mt-8 xl:mx-10">
-        <SettingsHeader />
-        <div>
-          <div className="mb-4 flex items-center justify-between md:mb-8 lg:mb-12">
-            <div className="space-y-1">
-              <h3 className="flex items-center gap-2 text-2xl font-semibold tracking-tight text-foreground">
-                Webhooks{" "}
-                {(isFree || isPro) && !isTrial ? (
-                  <PlanBadge plan="Business" />
-                ) : null}
-              </h3>
-              <p className="flex flex-row items-center gap-2 text-sm text-muted-foreground">
-                Send data to external services when events happen in Papermark
-                <BadgeTooltip content="Send data to external services when events happen in Papermark">
-                  <CircleHelpIcon className="h-4 w-4 shrink-0 text-muted-foreground hover:text-foreground" />
-                </BadgeTooltip>
-              </p>
-            </div>
-            <Link href="/settings/webhooks/new">
-              <Button>Create Webhook</Button>
-            </Link>
-          </div>
+    <div className="min-h-screen bg-white text-gray-900">
+      {/* Hero Section */}
+      <section className="relative text-center py-24 px-6 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-100 -z-10" />
+        <motion.h1 initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-6xl font-extrabold mb-6 tracking-tight">
+          Share Documents <span className="text-blue-600">Beautifully</span>
+        </motion.h1>
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5, duration: 0.8 }} className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+          A modern way to create, share and track documents. Inspired by Papermark, designed for your brand.
+        </motion.p>
+        <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.8, duration: 0.7 }} className="flex justify-center gap-4 mb-12">
+          <a href="#features" className="px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl shadow-lg hover:bg-blue-700 transition">Get Started</a>
+          <a href="#pricing" className="px-8 py-3 border border-gray-300 font-semibold rounded-xl hover:bg-gray-100 transition">Learn More</a>
+        </motion.div>
+        <motion.div initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1, duration: 0.8 }} className="max-w-5xl mx-auto">
+          <img src="https://dummyimage.com/1000x600/ffffff/000000.png&text=Your+App+Screenshot" alt="App Preview" className="rounded-2xl shadow-2xl border border-gray-200" />
+        </motion.div>
+      </section>
 
-          {/* Webhooks List */}
-          {!webhooks || webhooks.length === 0 ? (
-            <div className="flex flex-col items-center justify-center space-y-4 py-12">
-              <div className="rounded-full bg-gray-100 p-3">
-                <WebhookIcon className="h-6 w-6 text-gray-600" />
-              </div>
-              <div className="text-center">
-                <h3 className="font-medium">No webhooks configured</h3>
-                <p className="mt-1 max-w-sm text-sm text-gray-500">
-                  Webhooks allow you to receive HTTP requests whenever specific
-                  events occur in your account.
-                </p>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-3">
-              {webhooks.map((webhook) => (
-                <Link
-                  key={webhook.id}
-                  href={`/settings/webhooks/${webhook.id}`}
-                  className="rounded-xl border border-gray-200 bg-white p-4 transition-[filter] dark:border-gray-400 dark:bg-secondary sm:p-5"
-                >
-                  <div className="flex items-center gap-x-3">
-                    {/* <div className="rounded-md border border-gray-200 bg-gradient-to-t from-gray-100 p-2.5">
-                      <Avatar className="size-6">
-                        <AvatarFallback>
-                          {webhook.name.slice(0, 2).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                    </div> */}
-                    <div>
-                      <div className="flex items-center gap-1">
-                        <span className="font-semibold">{webhook.name}</span>
-                      </div>
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        {webhook.url}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+      {/* Features Section */}
+      <section id="features" className="py-24 bg-gray-50 px-6">
+        <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7 }} viewport={{ once: true }} className="text-4xl font-bold text-center mb-14">Why Choose Us?</motion.h2>
+        <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
+          {[ 
+            { icon: Zap, title: "Blazing Fast", desc: "Optimized performance ensures smooth and lightning-fast browsing." },
+            { icon: Lock, title: "Secure & Private", desc: "Enterprise-grade encryption to keep your documents safe." },
+            { icon: Globe, title: "Global Access", desc: "Accessible across devices with a consistent and modern design." }
+          ].map((f, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.3, duration: 0.8 }} viewport={{ once: true }} className="p-8 bg-white rounded-2xl shadow hover:shadow-lg transition">
+              <f.icon className="w-10 h-10 text-blue-600 mb-4" />
+              <h3 className="font-semibold text-xl mb-2">{f.title}</h3>
+              <p className="text-gray-600">{f.desc}</p>
+            </motion.div>
+          ))}
         </div>
-      </main>
-    </AppLayout>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="py-24 px-6 bg-white">
+        <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7 }} viewport={{ once: true }} className="text-4xl font-bold text-center mb-14">Simple & Transparent Pricing</motion.h2>
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {[
+            { title: "Starter", price: "Free", features: ["Up to 3 documents", "Basic analytics", "Community support"], highlight: false },
+            { title: "Pro", price: "$12/mo", features: ["Unlimited documents","Advanced analytics","Custom branding","Priority support"], highlight: true },
+            { title: "Enterprise", price: "Custom", features: ["Unlimited everything","Dedicated account manager","SSO & Enterprise features","24/7 support"], highlight: false }
+          ].map((plan,i)=>(
+            <motion.div key={i} initial={{ opacity:0,y:40 }} whileInView={{ opacity:1,y:0 }} transition={{ delay:i*0.3,duration:0.8 }} viewport={{ once:true }} className={`p-8 rounded-2xl shadow-lg border ${plan.highlight?"bg-blue-600 text-white scale-105 shadow-2xl":"bg-gray-50"}`}>
+              <h3 className={`text-2xl font-bold mb-4 ${plan.highlight?"text-white":"text-gray-900"}`}>{plan.title}</h3>
+              <p className={`text-3xl font-extrabold mb-6 ${plan.highlight?"text-white":"text-gray-800"}`}>{plan.price}</p>
+              <ul className="space-y-3 mb-6">
+                {plan.features.map((f,j)=><li key={j} className="flex items-center gap-2"><CheckCircle className={`w-5 h-5 ${plan.highlight?"text-white":"text-blue-600"}`} />{f}</li>)}
+              </ul>
+              <a href="#" className={`block text-center py-3 px-6 rounded-xl font-semibold transition ${plan.highlight?"bg-white text-blue-600 hover:bg-gray-100":"bg-blue-600 text-white hover:bg-blue-700"}`}>
+                {plan.highlight?"Get Pro":"Choose Plan"}
+              </a>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="testimonials" className="py-24 px-6 bg-gray-50">
+        <motion.h2 initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.7 }} viewport={{ once: true }} className="text-4xl font-bold text-center mb-14">Trusted by teams around the world</motion.h2>
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {[
+            {quote:"Papermark transformed how we share documents with clients. The analytics are a game changer!", name:"Sarah Johnson", role:"Product Manager at Acme Inc.", img:"https://randomuser.me/api/portraits/women/44.jpg"},
+            {quote:"Super clean and easy to use. Our sales team saves hours every week thanks to Papermark.", name:"David Lee", role:"Head of Sales at Growthify", img:"https://randomuser.me/api/portraits/men/32.jpg"},
+            {quote:"Finally a modern, secure way to share sensitive documents. Highly recommended!", name:"Maria Gomez", role:"CEO at InnovateX", img:"https://randomuser.me/api/portraits/women/68.jpg"}
+          ].map((t,i)=>(
+            <motion.div key={i} initial={{opacity:0,y:40}} whileInView={{opacity:1,y:0}} transition={{delay:i*0.3,duration:0.8}} viewport={{once:true}} className="bg-white p-8 rounded-2xl shadow-md">
+              <p className="text-gray-700 italic mb-6">“{t.quote}”</p>
+              <div className="flex items-center gap-4">
+                <img src={t.img} alt={t.name} className="w-12 h-12 rounded-full object-cover" />
+                <div>
+                  <p className="font-semibold text-gray-900">{t.name}</p>
+                  <p className="text-sm text-gray-500">{t.role}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-10 bg-gray-900 text-gray-300 text-center">
+        <p>© {new Date().getFullYear()} MyProject. All rights reserved.</p>
+      </footer>
+    </div>
   );
 }
